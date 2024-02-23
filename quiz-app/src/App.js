@@ -13,16 +13,20 @@ const NavPaper = styled(Paper)(({ theme }) => ({
 }));
 
 function App() {
-  
+  function clickFunction(page){
+    window.open(page, '_self');
+  };
   return (
     <Router>
       <div>
         <NavPaper>
-            <Button variant='outlined'>
-              <Link to="/">Startseite</Link>
+            <Button variant='outlined' onClick={()=>clickFunction('/')}>
+              {/*<Link to="/">Startseite</Link>*/}
+              HOME
             </Button>
-            <Button variant='outlined'>
-              <Link to="/quiz">Quiz</Link>
+            <Button variant='outlined' onClick={()=>clickFunction('/quiz')}>
+              QUIZ
+              {/*<Link to="/quiz">Quiz</Link>*/}
             </Button>
         </NavPaper>
 

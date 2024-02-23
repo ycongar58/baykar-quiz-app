@@ -7,15 +7,23 @@ const QuizPaper = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     margin: 15,
   }));
+const ResultPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(2),
+    ...theme.typography.body2,
+    textAlign: 'start',
+    margin: 15,
+  }));
 function Quiz() {
+  const countFetched = 10;
+  const countdownDuration = 30;
+  
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-  const [countdown, setCountdown] = useState(30);
   const [showResult, setShowResult] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
-  const countFetched = 10;
-  const [totalQuestions, setTotalQuestions] = useState(10);
+  const [countdown, setCountdown] = useState(countdownDuration);
+  const [totalQuestions, setTotalQuestions] = useState(countFetched);
 
   useEffect(() => {
     // Hier die Funktion zum Laden der Fragen
@@ -51,6 +59,8 @@ function Quiz() {
         return () => clearTimeout(timer);
     } else {
         setEnabled(false);
+        if(questions[currentQuestionIndex] !== undefined)
+          setUserAnswers([...userAnswers, { question: questions[currentQuestionIndex].title, answer: 'No Selection', correctAnswer: questions[currentQuestionIndex].correctAnswer}])
         handleNextQuestion();
     }
   }, [countdown]);
@@ -66,7 +76,7 @@ function Quiz() {
 
   const handleNextQuestion = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
-    setCountdown(30);
+    setCountdown(countdownDuration);
     if (currentQuestionIndex + 1 === questions.length) {
       setShowResult(true);
     }
@@ -84,7 +94,7 @@ function Quiz() {
 
   const renderResult = () => {
     return (
-      <div>
+      <ResultPaper  elevation={3}>
         <h2>Result</h2>
         <table>
           <thead>
@@ -104,7 +114,7 @@ function Quiz() {
             ))}
           </tbody>
         </table>
-      </div>
+        </ResultPaper>
     );
   };
 
